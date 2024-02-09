@@ -68,6 +68,11 @@ void TeamDeathMatch::readTeamFile(char* filePath, Team* team){
 
 // reads match file and adds stats to teams - params: DSString filePath
 void TeamDeathMatch::readMatchFile(char* filePath){
+
+    for(int i = 0; i < teamA.getMaxPlayers(); i++){
+        teamA.getPlayers()[i].addEnemies(teamB.getPlayers());
+    }
+
     std::ifstream matchFile(filePath);
     int shooter = 0;
     int target = 0;
@@ -138,6 +143,34 @@ void TeamDeathMatch::printMediumVerbosity(std::ofstream& outputFile){
 
 // prints to output file with highest verbosity
 void TeamDeathMatch::printHighVerbosity(std::ofstream& outputFile){
+    Player current;
+    Player target;
+
+    outputFile << teamA.getName() << std::endl;
+    for(int i = 0; i < teamA.getMaxPlayers(); i++){
+        current = teamA.getPlayers()[i];
+        for(int j = 0; j < teamB.getMaxPlayers(); j++){
+            target = teamB.getPlayers()[j];
+
+            outputFile << '\t' << current.getName() << " killed " << target.getName() << " " << current.getKillsOnPlayer(target.getId()) << " times\n";
+        }
+    }
+
+    outputFile << '\t' << teamA.getName() << ": " << teamA.getTotalPoints() << " points" << std::endl;
+
+
+    outputFile << teamB.getName() << std::endl;
+    for(int i = 0; i < teamA.getMaxPlayers(); i++){
+        current = teamB.getPlayers()[i];
+        for(int j = 0; j < teamA.getMaxPlayers(); j++){
+            target = teamA.getPlayers()[j];
+
+            outputFile << '\t' << current.getName() << " killed " << target.getName() << " " << current.getKillsOnPlayer(target.getId()) << " times\n";
+        }
+    }
+
+    outputFile << '\t' << teamB.getName() << ": " << teamB.getTotalPoints() << " points" << std::endl;
+
 }
 
 //default destructor

@@ -41,6 +41,11 @@ int Player::getTotalKills() const{
     return totalKills;
 }
 
+// setter - int totalKills
+void Player::setTotalKills(int totalKills){
+    this->totalKills = totalKills;
+}
+
 // getter - int totalPoints
 int Player::getTotalPoints() const{
     return totalPoints;
@@ -53,13 +58,31 @@ int* Player::getEnemyIds() const{
 
 // adds kill info to killsPerId and adds to kill and point totals - params: int targetId, int pointValue
 void Player::addKill(int targetId, int pointValue){
+    for(int i = 0; i < playersPerTeam; i++){
+        if(enemyIds[i] == targetId){
+            enemyKills[i]++;
+        }
+    }
     totalKills++;
     totalPoints += pointValue;
 }
 
 // returns number of kills on given id - params: int id
-int Player::getKillsForId(int id) const{
-    return -1;
+int Player::getKillsOnPlayer(int id) const{
+    for(int i = 0; i < playersPerTeam; i++){
+        if(enemyIds[i] == id){
+            return enemyKills[i];
+        }
+    }
+
+    return 0;
+}
+
+// adds enemie ids to enemyIds
+void Player::addEnemies(const Player* enemies){
+    for(int i = 0; i < playersPerTeam; i++){
+        enemyIds[i] = enemies[i].getId();
+    }
 }
 
 // assignment operator=

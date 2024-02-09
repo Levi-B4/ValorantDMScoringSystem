@@ -22,6 +22,8 @@ public:
 
     // getter - int totalKills
     int getTotalKills() const;
+    // setter - int totalKills
+    void setTotalKills(int totalKills);
 
     // getter - int totalPoints
     int getTotalPoints() const;
@@ -34,7 +36,10 @@ public:
     void addKill(int targetId, int pointValue);
 
     // returns number of kills on given id - params: int id
-    int getKillsForId(int id) const;
+    int getKillsOnPlayer(int id) const;
+
+    // adds enemie ids to enemyIds
+    void addEnemies(const Player* enemies);
 
 
     // assignment operator=
