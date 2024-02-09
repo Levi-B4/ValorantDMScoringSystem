@@ -1,6 +1,3 @@
-#data input files
-testData/*
-
 # C++ objects and libs
 *.slo
 *.lo
