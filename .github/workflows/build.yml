@@ -1,4 +1,4 @@
-name: Day1-Project0
+name: ValorantDMScoringSystem
 
 on:
   push:
@@ -15,8 +15,8 @@ jobs:
       ###   List them in the order that they need to appear in Argv param of main.
       ###   Output Files will follow input files
       ###   Note: These should be the actual names of the files.  No double quotes
-      INPUT_FILES: ./testData/100thieves.txt ./testData/faze.txt ./testData/match1.txt ###INSERT INPUT FILE NAMES
-      OUTPUT_FILES: ./testData/output.txt ###INSERT OUTPUT FILE NAMES
+      INPUT_FILES: testData/100thieves.txt testData/faze.txt testData/match1.txt ###INSERT INPUT FILE NAMES
+      OUTPUT_FILES: testData/output.txt ###INSERT OUTPUT FILE NAMES
       COMPILER: ${{matrix.config.compiler}}
       COMP: ${{matrix.config.comp}}
       CXXFLAGS: "-Werror"
@@ -76,7 +76,7 @@ jobs:
       - name: Run the project
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: ./$EXE_NAME $INPUT_FILES $OUTPUT_FILES
+        run: ./$EXE_NAME $INPUT_FILES $OUTPUT_FILES vhigh
 
       - name: Copy output files to artifact directory
         working-directory: ${{runner.workspace}}/build
