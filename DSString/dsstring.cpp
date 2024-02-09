@@ -19,7 +19,7 @@ DSString::DSString(const char* data) {
 }
 
 // constructor - parameters: const DSString otherData
-DSString::DSString(const DSString &other){
+DSString::DSString(const DSString& other){
     data = new char[other.size() + 1];
 
     std::memcpy(data, other.data, strlen(other.data));
@@ -86,6 +86,10 @@ DSString& DSString::operator=(const char* data){
 }
 
 DSString& DSString::operator=(const DSString& other){
+
+    if(this == &other){
+        return *this;
+    }
     delete[] data;
 
     data = new char[other.size() + 1];
@@ -336,38 +340,19 @@ std::ostream& operator<<(std::ostream& stream, const DSString& theString){
     return stream;
 }
 
+// operator >>
 std::istream& operator>>(std::istream& stream, DSString& theString){
-    if(stream.good()){
-        // change data to empty string if no content
-        if(stream.eof()){
-            theString = "";
-            return stream;
-        }
+    if(!stream.bad()){
+        char* buffer;
+        buffer = new char[500];
 
-        char tempChar;
-        char* tempArray = new char[999];
-        int currentIndex;
+        stream.get(buffer, 500);
+        // clear newline char
+        stream.get();
 
-        // itterate through each char of input adding to temp array
-        for(currentIndex = 0; !stream.eof(); currentIndex++){
-            stream.get(tempChar);
-            if(tempChar == '\r'){
-                continue;
-            }
-            if(tempChar == '\n'){
-                break;
-            }
-            tempArray[currentIndex] = tempChar;
-        }
+        theString = buffer;
 
-        delete[] theString.data;
-        theString.data = new char[currentIndex + 1];
-
-        /// copy temp array to data
-        memcpy(theString.data, tempArray, currentIndex);
-        theString.data[currentIndex] = '\0';
-
-        delete[] tempArray;
+        delete[] buffer;
     }
 
     return stream;

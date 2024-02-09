@@ -1,17 +1,18 @@
 #include "player.h"
 
-// defaulst constructor
-Player::Player(){
-
-}
-
 // constructor - params: int id, DSString name
-Player::Player(int id, DSString name){
+Player::Player(int id, DSString name, int playersPerTeam){
+    this->id = id;
+    this->name = name;
 
+    enemyIds = new int[playersPerTeam];
+    enemyKills = new int[playersPerTeam];
+
+    this->playersPerTeam = playersPerTeam;
 }
 
 // getter - int id
-int Player::getId(){
+int Player::getId() const{
     return id;
 }
 
@@ -21,8 +22,9 @@ void Player::setId(int id){
 }
 
 // getter - DSString name
-DSString Player::getName(){
+DSString Player::getName() const{
     return name;
+
 }
 
 // setter - DSString name
@@ -31,12 +33,12 @@ void Player::setName(DSString name){
 }
 
 // getter - int totalKills
-int Player::getTotalKills(){
+int Player::getTotalKills() const{
     return totalKills;
 }
 
 // getter - int totalPoints
-int Player::getTotalPoints(){
+int Player::getTotalPoints() const{
     return totalPoints;
 }
 
@@ -46,11 +48,36 @@ void Player::addKill(int targetId, int pointValue){
 }
 
 // returns number of kills on given id - params: int id
-int Player::getKillsForId(int id){
+int Player::getKillsForId(int id) const{
     return -1;
+}
+
+// assignment operator=
+Player& Player::operator=(const Player& other){
+    if(this == &other){
+        return *this;
+    }
+
+    delete[] enemyIds;
+    delete[] enemyKills;
+
+    enemyIds = new int[other.playersPerTeam];
+    enemyKills = new int[other.playersPerTeam];
+
+    for(int i = 0; i < other.playersPerTeam; i++){
+        enemyIds[i] = other.enemyIds[i];
+        enemyKills[i] = other.enemyKills[i];
+    }
+
+    id = other.id;
+    name = other.name;
+    playersPerTeam = other.playersPerTeam;
+    totalKills = other.totalKills;
+    totalPoints = other.totalPoints;
+
+    return *this;
 }
 
 // default destructor
 Player::~Player(){
-
 }
