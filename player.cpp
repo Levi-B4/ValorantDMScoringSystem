@@ -7,6 +7,10 @@ Player::Player(int id, DSString name, int playersPerTeam){
 
     enemyIds = new int[playersPerTeam];
     enemyKills = new int[playersPerTeam];
+    for(int i = 0; i < playersPerTeam; i++){
+        enemyIds[i] = 0;
+        enemyKills[i] = 0;
+    }
 
     this->playersPerTeam = playersPerTeam;
 }
@@ -42,9 +46,15 @@ int Player::getTotalPoints() const{
     return totalPoints;
 }
 
+// getter - int* enemyIds
+int* Player::getEnemyIds() const{
+    return enemyIds;
+}
+
 // adds kill info to killsPerId and adds to kill and point totals - params: int targetId, int pointValue
 void Player::addKill(int targetId, int pointValue){
-
+    totalKills++;
+    totalPoints += pointValue;
 }
 
 // returns number of kills on given id - params: int id

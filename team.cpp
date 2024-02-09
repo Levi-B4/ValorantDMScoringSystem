@@ -47,14 +47,52 @@ int Team::getTotalPoints(){
     return totalPoints;
 }
 
+// adds enemyIds to each player
+void Team::setEnemies(Team team){
+}
+
 // returns topPlayer
 Player Team::getTopPlayer(){
-    return players[1];
+    int top = -1;
+    int current;
+    Player bestPlayer;
+    for(int i = 0; i < maxPlayers; i++){
+        current = players[i].getTotalPoints();
+        if(current > top){
+            top = current;
+            bestPlayer = players[i];
+        }
+    }
+
+    return bestPlayer;
 }
 
 // processes a kill by adding values to players and to team - params: int shooterId, int targetId, int pointValue
 void Team::processKill(int shooterId, int targetId, int pointValue){
+    switch(pointValue){
+        case 1:
+            pointValue = 5;
+            break;
+        case 2:
+            pointValue = 8;
+            break;
+        case 3:
+            pointValue = 7;
+            break;
+        case 4:
+            pointValue = 4;
+            break;
+        default:
+            pointValue = 0;
+            break;
+    }
+    totalPoints += pointValue;
 
+    for(int i = 0; i < maxPlayers; i++){
+        if(players[i].getId() == shooterId){
+            players[i].addKill(targetId, pointValue);
+        }
+    }
 }
 
 // adds player to players - params: int id, DSString name
@@ -62,7 +100,8 @@ bool Team::addPlayer(int id, DSString name){
     if(numPlayers >= maxPlayers){
         return false;
     } else {
-        players[numPlayers++] = Player(id, name, maxPlayers);
+        players[numPlayers] = Player(id, name, maxPlayers);
+        numPlayers++;
         return true;
     }
 }
@@ -70,6 +109,16 @@ bool Team::addPlayer(int id, DSString name){
 // sorts players by kills, then in alphabetical order
 void Team::sortPlayers(){
 
+}
+
+// returns true if a player in players has the given id
+bool Team::hasPlayer(int id){
+    for(int i = 0; i < maxPlayers; i++){
+        if(players[i].getId() == id){
+            return true;
+        }
+    }
+    return false;
 }
 
 // assignment operator=

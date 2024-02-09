@@ -4,6 +4,9 @@
 #include "DSString/dsstring.h"
 #include "team.h"
 
+#include <fstream>
+#include <iostream>
+
 class TeamDeathMatch
 {
 public:
@@ -19,11 +22,11 @@ public:
     void readMatchFile(char* filePath);
 
     // prints to output file with minimum verbosity
-    void printLowVerbosity(char* outputPath);
+    void printLowVerbosity(std::ofstream& outputFile);
     // prints to output file with medium verbosity
-    void printMediumVerbosity(char* outputPath);
+    void printMediumVerbosity(std::ofstream& outputFile);
     // prints to output file with highest verbosity
-    void printHighVerbosity(char* outputPath);
+    void printHighVerbosity(std::ofstream& outputFile);
 
 
     //default destructor
@@ -33,7 +36,7 @@ private:
     DSString fileList[4];
     Team teamA;
     Team teamB;
-    DSString verbosity;
+    DSString verbosity = "";
 };
 
 #endif // TEAMDEATHMATCH_H

@@ -26,6 +26,9 @@ public:
     // getter - int totalPoints
     int getTotalPoints() const;
 
+    // getter - int* enemyIds
+    int* getEnemyIds() const;
+
 
     // adds kill info to killsPerId and adds to kill and point totals - params: int targetId, int pointValue
     void addKill(int targetId, int pointValue);
@@ -44,7 +47,7 @@ public:
 private:
     int id;
     DSString name = "";
-    int playersPerTeam;
+    int playersPerTeam = 0;
     int totalKills = 0;
     int totalPoints = 0;
 

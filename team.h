@@ -31,6 +31,9 @@ public:
     int getTotalPoints();
 
 
+    // adds enemyIds to each player
+    void setEnemies(Team team);
+
     // returns topPlayer
     Player getTopPlayer();
 
@@ -42,6 +45,9 @@ public:
 
     // sorts players by kills, then in alphabetical order
     void sortPlayers();
+
+    // returns true if a player in players has the given id
+    bool hasPlayer(int id);
 
 
     // assignment operator=
@@ -55,8 +61,8 @@ private:
     DSString name = "";
     Player* players;
     int numPlayers = 0;
-    int maxPlayers;
-    int totalPoints;
+    int maxPlayers = 0;
+    int totalPoints = 0;
 };
 
 #endif // TEAM_H
