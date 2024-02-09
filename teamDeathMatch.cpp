@@ -73,6 +73,7 @@ void TeamDeathMatch::readMatchFile(char* filePath){
 
     for(int i = 0; i < teamA.getMaxPlayers(); i++){
         teamA.getPlayers()[i].addEnemies(teamB.getPlayers());
+        teamB.getPlayers()[i].addEnemies(teamA.getPlayers());
     }
 
     std::ifstream matchFile(filePath);
@@ -158,11 +159,11 @@ void TeamDeathMatch::printHighVerbosity(std::ofstream& outputFile){
         }
     }
 
-    outputFile << '\t' << teamA.getName() << ": " << teamA.getTotalPoints() << " points" << std::endl;
+    outputFile << '\t' << teamA.getName() << ": " << teamA.getTotalPoints() << " points\n" << std::endl;
 
 
     outputFile << teamB.getName() << std::endl;
-    for(int i = 0; i < teamA.getMaxPlayers(); i++){
+    for(int i = 0; i < teamB.getMaxPlayers(); i++){
         current = teamB.getPlayers()[i];
         for(int j = 0; j < teamA.getMaxPlayers(); j++){
             target = teamA.getPlayers()[j];
@@ -171,8 +172,19 @@ void TeamDeathMatch::printHighVerbosity(std::ofstream& outputFile){
         }
     }
 
-    outputFile << '\t' << teamB.getName() << ": " << teamB.getTotalPoints() << " points" << std::endl;
+    outputFile << '\t' << teamB.getName() << ": " << teamB.getTotalPoints() << " points\n" << std::endl;
 
+
+    outputFile << "Winners: ";
+    int tAPoints = teamA.getTotalPoints();
+    int tBPoints = teamB.getTotalPoints();
+    if(tAPoints == tBPoints){
+        outputFile << "tie";
+    } else{
+        tAPoints > tBPoints ?
+            outputFile << teamA.getName() : outputFile << teamB.getName();
+    }
+    outputFile << std::endl;
 }
 
 //default destructor
