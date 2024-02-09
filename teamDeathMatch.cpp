@@ -16,6 +16,8 @@ TeamDeathMatch::TeamDeathMatch(char** fileList, char* verbosity){
 
     readMatchFile(fileList[2]);
 
+    teamA.sortPlayers();
+    teamB.sortPlayers();
 
     std::ofstream outputFile(fileList[3]);
 

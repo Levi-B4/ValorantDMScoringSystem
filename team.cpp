@@ -106,9 +106,36 @@ bool Team::addPlayer(int id, DSString name){
     }
 }
 
-// sorts players by kills, then in alphabetical order
+// sorts players by total kills, then in alphabetical order; selection sort
 void Team::sortPlayers(){
 
+    // sort by total kills
+    int i = 0, j = 0, biggestIndex = 0;
+    Player temp;
+    for(i = 0; i < maxPlayers; i++){
+        biggestIndex = i;
+        for(j = i + 1; j < maxPlayers; j++){
+            if(players[j].getTotalKills() > players[biggestIndex].getTotalKills()){
+                biggestIndex = j;
+            }
+        }
+
+        // swap biggest with current
+        temp = players[i];
+        players[i] = players[biggestIndex];
+        players[biggestIndex] = temp;
+    }
+
+    //sort alphabetically for ties, TODO:add another layer
+    for(i = 0; i < maxPlayers - 1; i++){
+        if(players[i].getTotalKills() == players[i + 1].getTotalKills()){
+            if(players[i].getName() > players[i + 1].getName()){
+                temp = players[i];
+                players[i] = players[i + 1];
+                players[i+1] = temp;
+            }
+        }
+    }
 }
 
 // returns true if a player in players has the given id
