@@ -16,8 +16,8 @@ jobs:
       ###   List them in the order that they need to appear in Argv param of main.
       ###   Output Files will follow input files
       ###   Note: These should be the actual names of the files.  No double quotes
-      INPUT_FILES: testData/100thieves.txt testData/faze.txt testData/match1.txt ###INSERT INPUT FILE NAMES
-      OUTPUT_FILES: testData/output.txt testData/output2.txt testData/output3.txt ###INSERT OUTPUT FILE NAMES
+      INPUT_FILES: testInputs/100thieves.txt testInputs/faze.txt testInputs/match1.txt ###INSERT INPUT FILE NAMES
+      OUTPUT_FILES: testOutputs/outputVLow.txt testOutputs/outputVMed.txt testOutputs/outputVHigh.txt ###INSERT OUTPUT FILE NAMES
       COMPILER: ${{matrix.config.compiler}}
       COMP: ${{matrix.config.comp}}
       CXXFLAGS: "-Werror"
@@ -72,28 +72,28 @@ jobs:
 
       - name: Run the project - Normal - Verbose [vlow]
         working-directory: ${{runner.workspace}}/build
-        run: ./${{env.EXE_NAME}} $INPUT_FILES output.txt vlow 1>/dev/null
+        run: ./${{env.EXE_NAME}} $INPUT_FILES testOutputs/outputVLow.txt vlow 1>/dev/null
 
       - name: Run the project - Normal - Verbose [vmed]
         working-directory: ${{runner.workspace}}/build
-        run: ./${{env.EXE_NAME}} $INPUT_FILES output2.txt vmed 1>/dev/null
+        run: ./${{env.EXE_NAME}} $INPUT_FILES testOutputs/outputVMed.txt vmed 1>/dev/null
 
       - name: Run the project - Normal - Verbose [vhigh]
         working-directory: ${{runner.workspace}}/build
-        run: ./${{env.EXE_NAME}} $INPUT_FILES output3.txt vhigh 1>/dev/null
+        run: ./${{env.EXE_NAME}} $INPUT_FILES testOutputs/outputVHigh.txt vhigh 1>/dev/null
 
 
       - name: Run the project - Valgrind - Verbose [vlow]
         working-directory: ${{runner.workspace}}/build
-        run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES output.txt vlow 1>/dev/null
+        run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES testOutputs/outputVLow.txt vlow 1>/dev/null
       
       - name: Run the project - Valgrind - Verbose [vmed]
         working-directory: ${{runner.workspace}}/build
-        run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES output2.txt vmed 1>/dev/null
+        run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES testOutputs/outputVMed.txt vmed 1>/dev/null
 
       - name: Run the project - Normal - Verbose [vhigh]
         working-directory: ${{runner.workspace}}/build
-        run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES output3.txt vhigh 1>/dev/null
+        run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES testOutputs/outputVHigh.txt vhigh 1>/dev/null
 
 
       - name: Copy output files to artifact directory
