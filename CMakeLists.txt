@@ -3,9 +3,9 @@ project(ValorantDMScoringSystem LANGUAGES CXX)
 set (EXE_NAME ValorantDMScoringSystem)
 
 # input files
-set (input01 "testInput/100thieves.txt")
-set (input02 "testInput/faze.txt")
-set (input03 "testInput/match1.txt")
+set (input01 "testInputs/100thieves.txt")
+set (input02 "testInputs/faze.txt")
+set (input03 "testInputs/match1.txt")
 
 # Copy data files to build dir
 foreach(file IN LISTS input01 input02 input03)
