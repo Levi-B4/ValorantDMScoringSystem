@@ -17,7 +17,7 @@ jobs:
       ###   Output Files will follow input files
       ###   Note: These should be the actual names of the files.  No double quotes
       INPUT_FILES: testData/100thieves.txt testData/faze.txt testData/match1.txt ###INSERT INPUT FILE NAMES
-      OUTPUT_FILES: testData/output.txt ###INSERT OUTPUT FILE NAMES
+      OUTPUT_FILES: testData/output.txt testData/output2.txt testData/output3.txt ###INSERT OUTPUT FILE NAMES
       COMPILER: ${{matrix.config.compiler}}
       COMP: ${{matrix.config.comp}}
       CXXFLAGS: "-Werror"
@@ -72,7 +72,7 @@ jobs:
 
       - name: Run the project - Normal - Verbose [vlow]
         working-directory: ${{runner.workspace}}/build
-        run: ./${{env.EXE_NAME}} $INPUT_FILES $OUTPUT_FILES vlow 1>/dev/null
+        run: ./${{env.EXE_NAME}} $INPUT_FILES output.txt vlow 1>/dev/null
 
       - name: Run the project - Normal - Verbose [vmed]
         working-directory: ${{runner.workspace}}/build
@@ -85,7 +85,7 @@ jobs:
 
       - name: Run the project - Valgrind - Verbose [vlow]
         working-directory: ${{runner.workspace}}/build
-        run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES $OUTPUT_FILES vlow 1>/dev/null
+        run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES output.txt vlow 1>/dev/null
       
       - name: Run the project - Valgrind - Verbose [vmed]
         working-directory: ${{runner.workspace}}/build
