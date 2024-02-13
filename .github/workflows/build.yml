@@ -1,9 +1,7 @@
 name: ValorantDMScoringSystem
-
 on:
   push:
     branches: [main]
-
 jobs:
   build:
     name: ${{matrix.config.name}}
@@ -17,7 +15,7 @@ jobs:
       ###   Output Files will follow input files
       ###   Note: These should be the actual names of the files.  No double quotes
       INPUT_FILES: testData/100thieves.txt testData/faze.txt testData/match1.txt ###INSERT INPUT FILE NAMES
-      OUTPUT_FILES: testData/output.txt testData/output2.txt testData/output3.txt ###INSERT OUTPUT FILE NAMES
+      OUTPUT_FILES: testData/output.txt ###INSERT OUTPUT FILE NAMES
       COMPILER: ${{matrix.config.compiler}}
       COMP: ${{matrix.config.comp}}
       CXXFLAGS: "-Werror"
@@ -34,16 +32,13 @@ jobs:
     defaults:
       run:
         shell: ${{matrix.config.shell}}
-
     steps:
       - name: Checkout project repo from GitHub
         uses: actions/checkout@v1
-
       - name: Download required linux packages
         run: |
           sudo apt update
           sudo apt install expect valgrind g++-multilib qemu-user
-
       - name: Executable name Environment Variable Check
         run: |
           echo ${{env.EXE_NAME}}
@@ -54,43 +49,36 @@ jobs:
           echo " "
           $COMPILER --version
           cmake --version
-
       - name: Create build environment
         run:  mkdir ${{runner.workspace}}/build
-
       - name: Configure the build
         working-directory: ${{runner.workspace}}/build
         run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-
       - name: Build the project
         working-directory: ${{runner.workspace}}/build
         run: cmake --build . --config $BUILD_TYPE
-
       - name: List contents of build directory
         run: ls -al ${{runner.workspace}}/build
-
-
       - name: Run the project - Normal - Verbose [vlow]
         working-directory: ${{runner.workspace}}/build
-        run: ./${{env.EXE_NAME}} $INPUT_FILES output.txt vlow 1>/dev/null
+        run: ./${{env.EXE_NAME}} $INPUT_FILES $OUTPUT_FILES vlow 1>/dev/null
 
       - name: Run the project - Normal - Verbose [vmed]
         working-directory: ${{runner.workspace}}/build
         run: ./${{env.EXE_NAME}} $INPUT_FILES output2.txt vmed 1>/dev/null
-          
+
       - name: Run the project - Normal - Verbose [vhigh]
         working-directory: ${{runner.workspace}}/build
         run: ./${{env.EXE_NAME}} $INPUT_FILES output3.txt vhigh 1>/dev/null
 
 
       - name: Run the project - Valgrind - Verbose [vlow]
-        working-directory: ${{runner.workspace}}/build
-        run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES output.txt vlow 1>/dev/null
+	@@ -89,11 +89,11 @@ jobs:
 
       - name: Run the project - Valgrind - Verbose [vmed]
         working-directory: ${{runner.workspace}}/build
         run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES output2.txt vmed 1>/dev/null
-          
+
       - name: Run the project - Normal - Verbose [vhigh]
         working-directory: ${{runner.workspace}}/build
         run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES output3.txt vhigh 1>/dev/null
@@ -105,7 +93,6 @@ jobs:
             echo "  Copying $f"
             cp $f artifacts/
           done
-
       - name: Upload output files to GitHub so they can be reviewed
         uses: actions/upload-artifact@v1
         with:
