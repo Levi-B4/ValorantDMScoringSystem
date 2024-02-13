@@ -76,11 +76,11 @@ jobs:
 
       - name: Run the project - Normal - Verbose [vmed]
         working-directory: ${{runner.workspace}}/build
-        run: ./${{env.EXE_NAME}} $INPUT_FILES $OUTPUT_FILES vmed 1>/dev/null
+        run: ./${{env.EXE_NAME}} $INPUT_FILES output2.txt vmed 1>/dev/null
           
       - name: Run the project - Normal - Verbose [vhigh]
         working-directory: ${{runner.workspace}}/build
-        run: ./${{env.EXE_NAME}} $INPUT_FILES $OUTPUT_FILES vhigh 1>/dev/null
+        run: ./${{env.EXE_NAME}} $INPUT_FILES output3.txt vhigh 1>/dev/null
 
 
       - name: Run the project - Valgrind - Verbose [vlow]
@@ -89,11 +89,11 @@ jobs:
 
       - name: Run the project - Valgrind - Verbose [vmed]
         working-directory: ${{runner.workspace}}/build
-        run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES $OUTPUT_FILES vmed 1>/dev/null
+        run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES output2.txt vmed 1>/dev/null
           
       - name: Run the project - Normal - Verbose [vhigh]
         working-directory: ${{runner.workspace}}/build
-        run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES $OUTPUT_FILES vhigh 1>/dev/null
+        run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES output3.txt vhigh 1>/dev/null
 
 
       - name: Copy output files to artifact directory
