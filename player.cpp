@@ -78,7 +78,7 @@ int Player::getKillsOnPlayer(int id) const{
     return 0;
 }
 
-// adds enemie ids to enemyIds
+// adds enemies ids to enemyIds
 void Player::addEnemies(const Player* enemies){
     for(int i = 0; i < playersPerTeam; i++){
         enemyIds[i] = enemies[i].getId();
