@@ -113,4 +113,6 @@ Player& Player::operator=(const Player& other){
 
 // default destructor
 Player::~Player(){
+    delete[] enemyIds;
+    delete[] enemyKills;
 }
