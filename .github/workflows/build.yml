@@ -83,9 +83,9 @@ jobs:
         run: ./${{env.EXE_NAME}} $INPUT_FILES output3.txt vhigh 1>/dev/null
 
 
-          ###- name: Run the project - Valgrind - Verbose [vlow]
-          ###working-directory: ${{runner.workspace}}/build
-          ###run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES $OUTPUT_FILES vlow 1>/dev/null
+      - name: Run the project - Valgrind - Verbose [vlow]
+        working-directory: ${{runner.workspace}}/build
+        run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES $OUTPUT_FILES vlow 1>/dev/null
       
       - name: Run the project - Valgrind - Verbose [vmed]
         working-directory: ${{runner.workspace}}/build
