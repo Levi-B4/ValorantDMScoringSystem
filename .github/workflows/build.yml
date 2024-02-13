@@ -1,7 +1,9 @@
 name: ValorantDMScoringSystem
+
 on:
   push:
     branches: [main]
+
 jobs:
   build:
     name: ${{matrix.config.name}}
@@ -32,13 +34,16 @@ jobs:
     defaults:
       run:
         shell: ${{matrix.config.shell}}
+
     steps:
       - name: Checkout project repo from GitHub
         uses: actions/checkout@v1
+
       - name: Download required linux packages
         run: |
           sudo apt update
           sudo apt install expect valgrind g++-multilib qemu-user
+      
       - name: Executable name Environment Variable Check
         run: |
           echo ${{env.EXE_NAME}}
@@ -49,16 +54,21 @@ jobs:
           echo " "
           $COMPILER --version
           cmake --version
+      
       - name: Create build environment
         run:  mkdir ${{runner.workspace}}/build
+      
       - name: Configure the build
         working-directory: ${{runner.workspace}}/build
         run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+      
       - name: Build the project
         working-directory: ${{runner.workspace}}/build
         run: cmake --build . --config $BUILD_TYPE
+      
       - name: List contents of build directory
         run: ls -al ${{runner.workspace}}/build
+      
       - name: Run the project - Normal - Verbose [vlow]
         working-directory: ${{runner.workspace}}/build
         run: ./${{env.EXE_NAME}} $INPUT_FILES $OUTPUT_FILES vlow 1>/dev/null
@@ -73,8 +83,9 @@ jobs:
 
 
       - name: Run the project - Valgrind - Verbose [vlow]
-	@@ -89,11 +89,11 @@ jobs:
-
+	working-directory: ${{runner.workspace}}/build
+        run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES $OUTPUT_FILES vlow 1>/dev/null
+      
       - name: Run the project - Valgrind - Verbose [vmed]
         working-directory: ${{runner.workspace}}/build
         run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES output2.txt vmed 1>/dev/null
@@ -93,6 +104,7 @@ jobs:
             echo "  Copying $f"
             cp $f artifacts/
           done
+
       - name: Upload output files to GitHub so they can be reviewed
         uses: actions/upload-artifact@v1
         with:
