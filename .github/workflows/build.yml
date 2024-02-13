@@ -69,6 +69,7 @@ jobs:
       - name: List contents of build directory
         run: ls -al ${{runner.workspace}}/build
       
+
       - name: Run the project - Normal - Verbose [vlow]
         working-directory: ${{runner.workspace}}/build
         run: ./${{env.EXE_NAME}} $INPUT_FILES $OUTPUT_FILES vlow 1>/dev/null
