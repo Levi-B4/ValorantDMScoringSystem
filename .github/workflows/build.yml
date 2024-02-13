@@ -2,12 +2,13 @@ name: ValorantDMScoringSystem
 
 on:
   push:
-    branches: main
+    branches: [main]
 
 jobs:
   build:
     name: ${{matrix.config.name}}
     runs-on: ${{matrix.config.os}}
+    timeout-minutes: 3
     env:
       BUILD_TYPE: Release
       EXE_NAME: ValorantDMScoringSystem
@@ -20,7 +21,6 @@ jobs:
       COMPILER: ${{matrix.config.compiler}}
       COMP: ${{matrix.config.comp}}
       CXXFLAGS: "-Werror"
-    timeout-minutes: 3
     strategy:
       matrix:
         config:
@@ -39,44 +39,62 @@ jobs:
       - name: Checkout project repo from GitHub
         uses: actions/checkout@v1
 
+      - name: Download required linux packages
+        run: |
+          sudo apt update
+          sudo apt install expect valgrind g++-multilib qemu-user
+
       - name: Executable name Environment Variable Check
         run: |
-          echo $EXE_NAME
+          echo ${{env.EXE_NAME}}
           echo " "
           echo ${{runner.workspace}}
           echo " "
           echo $GITHUB_WORKSPACE
           echo " "
-          g++ --version
+          $COMPILER --version
           cmake --version
 
       - name: Create build environment
         run:  mkdir ${{runner.workspace}}/build
 
       - name: Configure the build
-        # Use a bash shell so we can use the same syntax for environment variable
-        # access regardless of the host operating system
-        shell: bash
         working-directory: ${{runner.workspace}}/build
         run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
 
       - name: Build the project
         working-directory: ${{runner.workspace}}/build
-        shell: bash
-        # Execute the build.  You can specify a specific target with "--target <NAME>"
         run: cmake --build . --config $BUILD_TYPE
-
-      - name: Test build
-        working-directory: ${{runner.workspace}}/build
-        run: make -j2 optimize=no debug=yes > /dev/null
 
       - name: List contents of build directory
         run: ls -al ${{runner.workspace}}/build
 
-      - name: Run the project
+
+      - name: Run the project - Normal - Verbose [vlow]
         working-directory: ${{runner.workspace}}/build
-        shell: bash
-        run: ./$EXE_NAME $INPUT_FILES $OUTPUT_FILES vhigh
+        run: ./${{env.EXE_NAME}} $INPUT_FILES $OUTPUT_FILES vlow 1>/dev/null
+
+      - name: Run the project - Normal - Verbose [vmed]
+        working-directory: ${{runner.workspace}}/build
+        run: ./${{env.EXE_NAME}} $INPUT_FILES $OUTPUT_FILES vmed 1>/dev/null
+          
+      - name: Run the project - Normal - Verbose [vhigh]
+        working-directory: ${{runner.workspace}}/build
+        run: ./${{env.EXE_NAME}} $INPUT_FILES $OUTPUT_FILES vhigh 1>/dev/null
+
+
+      - name: Run the project - Valgrind - Verbose [vlow]
+        working-directory: ${{runner.workspace}}/build
+        run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES $OUTPUT_FILES vlow 1>/dev/null
+
+      - name: Run the project - Valgrind - Verbose [vmed]
+        working-directory: ${{runner.workspace}}/build
+        run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES $OUTPUT_FILES vmed 1>/dev/null
+          
+      - name: Run the project - Normal - Verbose [vhigh]
+        working-directory: ${{runner.workspace}}/build
+        run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES $OUTPUT_FILES vhigh 1>/dev/null
+
 
       - name: Copy output files to artifact directory
         working-directory: ${{runner.workspace}}/build
