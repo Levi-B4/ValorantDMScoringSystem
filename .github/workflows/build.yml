@@ -110,4 +110,4 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: project_output
-          path: ${{runner.workspace}}/build/artifacts/testOutputs
+          path: ${{runner.workspace}}/build/artifacts
