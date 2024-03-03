@@ -91,20 +91,20 @@ jobs:
         working-directory: ${{runner.workspace}}/build
         run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES testOutputs/outputVMed.txt vmed 1>/dev/null
 
-      - name: Run the project - Normal - Verbose [vhigh]
+      - name: Run the project - Valgrind - Verbose [vhigh]
         working-directory: ${{runner.workspace}}/build
         run: valgrind --error-exitcode=42 --errors-for-leak-kinds=all --leak-check=full ./${{env.EXE_NAME}} $INPUT_FILES testOutputs/outputVHigh.txt vhigh 1>/dev/null
 
 
-      - name: Copy output files to artifact directory
-        working-directory: ${{runner.workspace}}/build
-        run: |
-          mkdir artifacts
-          for f in $OUTPUT_FILES
-          do
-            echo "  Copying $f"
-            cp $f artifacts/
-          done
+          #- name: Copy output files to artifact directory
+          #working-directory: ${{runner.workspace}}/build
+          #run: |
+          #mkdir artifacts
+          #for f in $OUTPUT_FILES
+          #do
+          #  echo "  Copying $f"
+          #  cp $f artifacts/
+          #done
 
       - name: Upload output files to GitHub so they can be reviewed
         uses: actions/upload-artifact@v1
