@@ -17,7 +17,7 @@ jobs:
       ###   Output Files will follow input files
       ###   Note: These should be the actual names of the files.  No double quotes
       INPUT_FILES: 100thieves.txt faze.txt match1.txt ###INSERT INPUT FILE NAMES
-      OUTPUT_FILES: outputVLow.txt outputVMed.txt outputVHigh ###INSERT OUTPUT FILE NAMES
+      OUTPUT_FILES: outputVLow.txt outputVMed.txt outputVHigh.txt ###INSERT OUTPUT FILE NAMES
       COMPILER: ${{matrix.config.compiler}}
       COMP: ${{matrix.config.comp}}
       CXXFLAGS: "-Werror"
