@@ -2,7 +2,7 @@ name: ValorantDMScoringSystem
 
 on:
   push:
-    branches: [uploadFilesToArchive]
+    branches: [main]
 
 jobs:
   build:
